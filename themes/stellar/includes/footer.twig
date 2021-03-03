@@ -1,0 +1,44 @@
+{# Page Footer #}
+<footer id="footer">
+	{# Left Side #}
+	{% if pages.index.meta.footer %}
+		<section>
+			{% if pages.index.meta.footer.title %}<h2>{{ pages.index.meta.footer.title }}</h2>{% endif %}
+			{{ pages.index.id|content }}
+			{% if pages.index.meta.footer.actions %}
+				{% set actions = pages.index.meta.footer.actions %}
+				{% include "includes/actions.twig" %}
+			{% endif %}
+		</section>
+	{% endif %}
+
+	{# Right Side #}
+	{% if pages.index.meta.contact %}
+		<section>
+			{% if pages.index.meta.contact.title %}<h2>{{ pages.index.meta.contact.title }}</h2>{% endif %}
+			
+			{% if pages.index.meta.contact.items %}
+				<dl class="alt">
+				{% for key,item in pages.index.meta.contact.items %}
+					<dt>{{ key }}</dt>
+					<dd>{{ item }}</dd>
+				{% endfor %}
+				</dl>
+			{% endif %}
+
+			{% if pages.index.meta.contact.actions %}
+				{% set action_mode = "icons" %}
+				{% set actions = pages.index.meta.contact.actions %}
+				{% include "includes/actions.twig" %}
+			{% endif %}
+		</section>
+	{% endif %}
+	{% if pages.index.meta.stellar.copyright %}
+		{% set copyright = pages.index.meta.stellar.copyright %}
+	{% else %}
+		{% set copyright = site_title %}
+	{% endif %}
+
+	{# Copyright #}
+	<p class="copyright">&copy;&nbsp;{{ copyright }}. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+</footer>

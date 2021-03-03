@@ -1,0 +1,33 @@
+<head>
+	<title>{{ site_title }}</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	
+	<meta name="description" content="{{ pages.index.meta.stellar.description }}">
+	{% if pages.index.meta.stellar.robots %}<meta name="robots" content="{{ pages.index.meta.stellar.robots }}">{% endif %}
+	
+	<link rel="stylesheet" href="{{ theme_url }}/assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="{{ theme_url }}/assets/css/noscript.css" /></noscript>
+
+	{# User CSS & Fonts #}
+	{% if pages.index.meta.stellar.css %}
+		<link rel="stylesheet" href="{{ base_url }}/{{ pages.index.meta.stellar.css }}" type="text/css">
+	{% endif %}
+	{% if pages.index.meta.stellar.fonts %}
+		{% if pages.index.meta.stellar.fonts is not iterable %}
+			{% set fonts = [pages.index.meta.stellar.fonts] %}
+		{% else %}
+			{% set fonts = pages.index.meta.stellar.fonts %}
+		{% endif %}
+		{% for url in fonts %}
+			<link href='{{ url }}' rel='stylesheet' type='text/css'>
+		{% endfor %}
+	{% endif %}
+
+	{# Open Graph #}
+	<meta property="og:title" content="{{ site_title }}">
+	<meta property="og:description" content="{{ pages.index.meta.stellar.description }}">
+	<meta property="og:url" content="{{ base_url }}">
+	<meta property="og:type" content="website">
+	{% if pages.index.meta.stellar.og_image %}<meta property="og:image" content="{{ base_url }}/{{ pages.index.meta.stellar.og_image }}">{% endif %}
+</head>

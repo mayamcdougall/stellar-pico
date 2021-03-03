@@ -1,0 +1,86 @@
+{# Check if we should use "special" class for centered content #}
+{% set section_class = ["main"] %}
+{% if mode in ["features", "statistics"] or page.meta.center %}
+	{% set section_class = section_class|merge(["special"]) %}
+{% endif %}
+
+{# Section Header #}
+<section id="{{ page.id }}" class="{{ section_class|join(" ") }}">
+	{% if mode == "spotlight" %}
+		<div class="spotlight"><div class="content">
+	{% endif %}
+
+	{% if page.title or page.description %}
+		<header class="major">
+			{% if page.title %}<h2>{{ page.title }}</h2>{% endif %}
+			{% if page.description %}<p>{{ page.description|raw }}</p>{% endif %}
+		</header>
+	{% endif %}
+
+	{% if mode != "statistics" %}
+		{{ page.id|content }}
+	{% endif %}
+
+	{# Features and Statistics Modes #}
+	{% if mode in ["features", "statistics"] %}
+		<ul class="{{ mode }}">
+			{% for key,icon in page.meta.icons %}
+				{% if icon.options is not iterable %}
+					{% set options = [icon.options] %}
+				{% else %}
+					{% set options = icon.options %}
+				{% endif %}
+
+				{% set icon_classes = ["icon"] %}
+				{% set style = "style1" %}
+				{% for option in options %}
+					{% if option in ["style1", "style2", "style3", "style4", "style5"] %}
+						{% set style = option %}
+					{% elseif option in ["solid", "brands"] %}
+						{% set icon_classes = icon_classes|merge([option]) %}
+					{% endif %}
+				{% endfor %}
+
+				{% if mode == "features" %}
+					{% set icon_classes = icon_classes|merge(["major", style]) %}
+				{% endif %}
+
+				{% set icon_classes = icon_classes|merge([icon.icon]) %}
+
+				<li {% if mode == "statistics" %} class="{{ style }}"{% endif %} >
+					<span class="{{ icon_classes|join(" ") }}"></span>
+					{% if mode == "features" %}
+						<h3>{{ key }}</h3>
+						<p>{{ icon.description }}</p>
+					{% elseif mode == "statistics" %}
+						<span class="{{ class|join(" ") }}"></span>
+						<strong>{{ icon.description }}</strong> {{ key }}
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+		{% if mode == "statistics" %}{{ page.id|content|replace({'<p>': '<p class="content">'})|raw }}{% endif %}
+	{% endif %}
+
+	{# Section Footer #}
+	{% if page.meta.actions %}
+		<footer class="major">
+			{% set actions = page.meta.actions %}
+			{% include "includes/actions.twig" %}
+		</footer>
+	{% endif %}
+
+	{# Spotlight Mode #}
+	{% if mode == "spotlight" %}
+		</div>
+		<span class="image">
+			{% if page.meta.image %}
+				{% set img_url = page.meta.image %}
+			{% else %}
+				{% set img_url = theme_url ~ "/images/pic01.jpg" %}
+			{% endif %}
+			<img src="{{ img_url }}" alt="" />
+		</span></div>
+	{% endif %}
+
+</section>

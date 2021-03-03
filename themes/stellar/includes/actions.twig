@@ -1,0 +1,83 @@
+{# Determine ul Classes #}
+{% set ul_classes = [] %}
+{% if action_mode != "icons" %}
+	{% set action_mode = "buttons" %}
+	{% set ul_classes = ul_classes|merge(["actions"]) %}
+	{% set center = false %}
+{% else %}
+	{% set ul_classes = ul_classes|merge(["icons"]) %}
+	{% set no_circle = false %}
+{% endif %}
+
+{% for action in actions %}
+
+	{% if action.options is not iterable %}
+		{% set options = [action.options] %}
+	{% else %}
+		{% set options = action.options %}
+	{% endif %}
+
+	{% for option in options %}
+		{% if action_mode == "buttons" and option in ["fit", "stacked"] %}
+			{% set ul_classes = ul_classes|merge([option]) %}
+		{% elseif action_mode == "buttons" and option == "center" %}
+			{% set center = true %}
+		{% elseif action_mode == "icons" and option == "no_circle" %}
+			{% set no_circle = true %}
+		{% endif %}
+	{% endfor %}
+
+{% endfor %}
+
+{% if "special" in section_class or center %}{% set ul_classes = ul_classes|merge(["special"]) %}{% endif %}
+
+<ul class="{{ ul_classes|join(" ") }}">
+
+{# Determine li Classes #}
+{% for key,action in actions %}
+
+	{% set action_classes = [] %}
+	{% if action_mode == "buttons" %}
+		{% set action_classes = action_classes|merge(["button"]) %}
+	{% endif %}
+
+	{% if action.options is not iterable %}
+		{% set options = [action.options] %}
+	{% else %}
+		{% set options = action.options %}
+	{% endif %}
+
+	{% for option in options %}
+		{% if (action_mode == "buttons" and option in ["primary", "large", "small", "disabled", "solid", "brands"])
+		or (action_mode == "icons" and option in ["brands"]) %}
+			{% set action_classes = action_classes|merge([option]) %}
+		{% endif %}
+	{% endfor %}
+
+	{% if fit %}
+		{% set action_classes = action_classes|merge(["fit"]) %}
+	{% endif %}
+
+	{% if stacked %}
+		{% set action_classes = action_classes|merge(["stacked"]) %}
+	{% endif %}
+
+	{% if action.icon %}
+		{% set action_classes = action_classes|merge(["icon"]) %}
+		{% set action_classes = action_classes|merge([action.icon]) %}
+	{% endif %}
+
+	{% if action_mode == "icons" and not no_circle %}
+		{% set action_classes = action_classes|merge(["alt"]) %}
+	{% endif %}
+
+	{# Create List Item #}
+	<li>
+		<a href="{{ action.url }}" class="{{ action_classes|join(" ") }}">
+			{% if action_mode == "icons" %}<span class="label">{% endif %}
+			{{ key }}
+			{% if action_mode == "icons" %}</span>{% endif %}
+		</a>
+	</li>
+{% endfor %}
+</ul>

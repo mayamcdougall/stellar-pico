@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+{#
+	Pico port by Maya McDougall.
+	Stellar-Pico v1.0.0
+	https://github.com/mayamcdougall/stellar-pico
+#}
+<html>
+
+	{% include "includes/head.twig" %}
+
+	<body class="is-preload">
+
+		{# Show YAML Errors #}
+		{% for page in pages if page.meta.YAML_ParseError %}
+			<p style="
+				color: white;
+				text-align: center;
+				background-color: darkred;
+				margin-bottom: -25px;
+				text-transform: none;
+			">Header Error in <a href="{{ page.url }}">{{ page.id }}</a>, {{ page.meta.YAML_ParseError }}</p>
+		{% endfor %}
+
+		{# Wrapper #}
+		<div id="wrapper">
+
+			{# Header #}
+			<header id="header" class="alt">
+				{% if pages.index.meta.stellar.logo %}
+					{% set logo_url = pages.index.meta.stellar.logo %}
+				{% else %}
+					{% set logo_url = theme_url ~ "/images/logo.svg" %}
+				{% endif %}
+				{% if logo_url != "no_logo" %}<span class="logo"><img src="{{ logo_url }}" alt="" /></span>{% endif %}
+				<h1>{{ site_title }}</h1>
+				{% if pages.index.meta.stellar.description %}<p>{{ pages.index.meta.stellar.description }}</p>{% endif %}
+			</header>
+
+			{# Nav #}
+			<nav id="nav">
+				<ul>
+				{% for page in pages if page.id != "index" %}
+					<li><a href="#{{ page.id }}" {% if loop.first %}class="active"{% endif %}>{{ page.title }}</a></li>
+				{% endfor %}
+				</ul>
+			</nav>
+
+			{# Main #}
+			<div id="main">
+				{% for page in pages if page.id != "index" %}
+					{% if page.meta.mode in ["spotlight", "features", "statistics"] %}
+						{% set mode = page.meta.mode %}
+					{% else %}
+						{% set mode = "generic" %}
+					{% endif %}
+					{% include "includes/content.twig" %}
+				{% endfor %}
+			</div>
+
+			{% include "includes/footer.twig" %}
+
+		</div>
+
+		{% include "includes/scripts.twig" %}
+
+	</body>
+</html>
