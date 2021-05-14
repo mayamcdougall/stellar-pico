@@ -172,7 +172,7 @@ actions:
 
 If you have any issues with this port, or would like to request a feature, please create a new [Issue][] on GitHub.
 
-[Stellar]: https://html5up.net/Stellar
+[Stellar]: https://html5up.net/stellar
 [PicoCMS]: http://picocms.org/
 [Latest Release]: https://github.com/mayamcdougall/stellar-pico/releases
 [Issue]: https://github.com/mayamcdougall/stellar-pico/issues
