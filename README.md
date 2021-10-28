@@ -10,9 +10,10 @@ To use this theme:
 1. Download the [Latest Release][] on GitHub.
 2. Extract `themes/stellar` to your Pico `themes` folder.
 3. Optionally extract all files in `content-sample/` to your `content` folder.
-4. Optionally, set your site to order pages by `index` in Pico's `config.yml`. See below.
-5. Configure your website using the YAML options in `index.md`.
-6. Add sections to your page with new `.md` files.
+4. Set your `theme` to `stellar` in Pico's `config.yml`.
+5. Optionally, set your site to order pages by `index` in Pico's `config.yml`. See below.
+6. Configure your website using the YAML options in `index.md`.
+7. Add sections to your page with new `.md` files.
 
 ## Details
 
