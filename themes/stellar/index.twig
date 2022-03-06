@@ -6,7 +6,7 @@
 -->
 {#
 	Pico port by Maya McDougall.
-	Stellar-Pico v1.0.0
+	Stellar-Pico v1.0.1
 	https://github.com/mayamcdougall/stellar-pico
 #}
 <html>
@@ -16,14 +16,16 @@
 	<body class="is-preload">
 
 		{# Show YAML Errors #}
-		{% for page in pages if page.meta.YAML_ParseError %}
-			<p style="
-				color: white;
-				text-align: center;
-				background-color: darkred;
-				margin-bottom: -25px;
-				text-transform: none;
-			">Header Error in <a href="{{ page.url }}">{{ page.id }}</a>, {{ page.meta.YAML_ParseError }}</p>
+		{% for page in pages(depthOffset=-1,depth=null) %}
+			{% if page.meta.YAML_ParseError %}
+				<p style="
+					color: white;
+					text-align: center;
+					background-color: darkred;
+					margin-bottom: -25px;
+					text-transform: none;
+				">Header Error in <a href="{{ page.url }}">{{ page.id }}</a>, {{ page.meta.YAML_ParseError }}</p>
+			{% endif %}
 		{% endfor %}
 
 		{# Wrapper #}
@@ -44,21 +46,25 @@
 			{# Nav #}
 			<nav id="nav">
 				<ul>
-				{% for page in pages if page.id != "index" %}
-					<li><a href="#{{ page.id }}" {% if loop.first %}class="active"{% endif %}>{{ page.title }}</a></li>
+				{% for page in pages() %}
+					{% if not page.hidden %}
+						<li><a href="#{{ page.id }}" {% if loop.first %}class="active"{% endif %}>{{ page.title }}</a></li>
+					{% endif %}
 				{% endfor %}
 				</ul>
 			</nav>
 
 			{# Main #}
 			<div id="main">
-				{% for page in pages if page.id != "index" %}
-					{% if page.meta.mode in ["spotlight", "features", "statistics"] %}
-						{% set mode = page.meta.mode %}
-					{% else %}
-						{% set mode = "generic" %}
+				{% for page in pages() %}
+					{% if not page.hidden %}
+						{% if page.meta.mode in ["spotlight", "features", "statistics"] %}
+							{% set mode = page.meta.mode %}
+						{% else %}
+							{% set mode = "generic" %}
+						{% endif %}
+						{% include "includes/content.twig" %}
 					{% endif %}
-					{% include "includes/content.twig" %}
 				{% endfor %}
 			</div>
 
