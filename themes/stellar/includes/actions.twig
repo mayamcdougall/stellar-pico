@@ -73,7 +73,7 @@
 
 	{# Create List Item #}
 	<li>
-		<a {{ action_mode == "icons" and action.icon == "mastodon" ? 'rel="me" ' : "" }}href="{{ action.url }}" class="{{ action_classes|join(" ") }}">
+		<a {{ action_mode == "icons" and action.icon matches "/mastodon/i" ? ' rel="me"' : "" }} href="{{ action.url }}" class="{{ action_classes|join(" ") }}">
 			{% if action_mode == "icons" %}<span class="label">{% endif %}
 			{{ key }}
 			{% if action_mode == "icons" %}</span>{% endif %}
